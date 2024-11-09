@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { authGuard } from './services/guards/auth.guard';
+
 
 const routes: Routes = [
   {
@@ -26,10 +28,14 @@ const routes: Routes = [
   {
     path: 'remedios',
     loadChildren: () => import('./remedios/remedios/remedios.module').then(m => m.RemediosPageModule),
+  
   },
   {
     path: 'remedios-add',
-    loadChildren: () => import('./remedios/remedios-add/remedios-add.module').then(m => m.RemediosAddPageModule),
+    loadChildren: () => import('./remedios/remedios-add/remedios-add.module').then(m => m.RemediosAddPageModule),canActivate: [authGuard]
+    
+    
+
   },
   {
     path: 'remedios-all',

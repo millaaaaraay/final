@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
   async checkLoginStatus() {
     const isLoggedIn = await this.Storage.isLoggedIn();
     if (isLoggedIn) {
-      this.router.navigate(['/index']);
+      this.router.navigate(['/login']);
     }
   }
 

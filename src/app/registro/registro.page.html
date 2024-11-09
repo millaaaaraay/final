@@ -10,32 +10,38 @@
       <img src="assets/icon/formulario.png" alt="Logo" class="logo">
     </div>
 
-    <form id="registrationForm" class="registration-form">
+    <form [formGroup]="formularioRegistro" (ngSubmit)="register()" class="registration-form">
       <ion-item class="registration-input">
         <ion-icon name="person-outline" slot="start"></ion-icon>
-        <ion-input name="name" id="name" label="Nombre" label-placement="floating" fill="solid" placeholder="Nombre"></ion-input>
+        <ion-input formControlName="nombre" label="Nombre" label-placement="floating" fill="solid" placeholder="Nombre"></ion-input>
       </ion-item>
-      <div id="name-error" class="error-message"></div>
-      
-      <ion-item class="registration-input">
-        <ion-icon name="person-outline" slot="start"></ion-icon>
-        <ion-input name="surname" id="surname" label="Apellido" label-placement="floating" fill="solid" placeholder="Apellido"></ion-input>
-      </ion-item>
-      <div id="surname-error" class="error-message"></div>
+      <div class="error-message" *ngIf="formularioRegistro.get('nombre')?.errors?.['required'] && formularioRegistro.get('nombre')?.touched">
+        El nombre es requerido
+      </div>
       
       <ion-item class="registration-input">
         <ion-icon name="mail-outline" slot="start"></ion-icon>
-        <ion-input name="email" id="email" label="Correo" label-placement="floating" fill="solid" type="email" placeholder="Correo"></ion-input>
+        <ion-input formControlName="email" label="Correo" label-placement="floating" fill="solid" type="email" placeholder="Correo"></ion-input>
       </ion-item>
-      <div id="email-error" class="error-message"></div>
+      <div class="error-message" *ngIf="formularioRegistro.get('email')?.errors?.['required'] && formularioRegistro.get('email')?.touched">
+        El correo es requerido
+      </div>
+      <div class="error-message" *ngIf="formularioRegistro.get('email')?.errors?.['pattern'] && formularioRegistro.get('email')?.touched">
+        Ingrese un correo válido
+      </div>
       
       <ion-item class="registration-input">
         <ion-icon name="shield-half-outline" slot="start"></ion-icon>
-        <ion-input name="password" id="password" label="Contraseña" label-placement="floating" fill="solid" type="password" placeholder="Contraseña"></ion-input>
+        <ion-input formControlName="contrasena" label="Contraseña" label-placement="floating" fill="solid" type="password" placeholder="Contraseña"></ion-input>
       </ion-item>
-      <div id="password-error" class="error-message"></div>
+      <div class="error-message" *ngIf="formularioRegistro.get('contrasena')?.errors?.['required'] && formularioRegistro.get('contrasena')?.touched">
+        La contraseña es requerida
+      </div>
+      <div class="error-message" *ngIf="formularioRegistro.get('contrasena')?.errors?.['pattern'] && formularioRegistro.get('contrasena')?.touched">
+        La contraseña debe tener al menos 8 caracteres, una mayúscula, 4 números y 3 letras
+      </div>
       
-      <ion-button expand="full" color="primary" class="submit-button" type="submit">
+      <ion-button expand="full" color="primary" class="submit-button" type="submit" [disabled]="!formularioRegistro.valid">
         Registrarse
       </ion-button>     
     </form>

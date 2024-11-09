@@ -1,27 +1,38 @@
 import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx'; // Importación corregida
+import { Observable, of, throwError, interval, lastValueFrom } from 'rxjs';
+import { DataService } from './data.service';
+import { SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { switchMap } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
 import { Clremedios } from './models/CLremedios';
+import { Clusuarios } from './models/Clusuarios';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BddService {
+  private dbInstance!: SQLiteObject;
 
-  db: SQLiteObject | null = null;
-
-  constructor(private sqlite: SQLite, private platform: Platform) {
+  constructor(
+    private dataService: DataService,
+    private sqlite: SQLite,
+    private platform: Platform
+  ) {
     this.platform.ready().then(() => {
       this.initDatabase();
     });
+    this.startBackgroundSync();
   }
 
   async initDatabase(): Promise<void> {
     try {
-      this.db = await this.sqlite.create({
+      const db = await this.sqlite.create({
         name: 'data.db',
         location: 'default'
       });
+      this.setDb(db);
       await this.createTables();
     } catch (e) {
       console.error('Error opening database', e);
@@ -29,19 +40,31 @@ export class BddService {
     }
   }
 
+  setDb(db: SQLiteObject) {
+    if (!this.dbInstance) {
+      this.dbInstance = db;
+    }
+  }
+
   async createTables(): Promise<void> {
-    const tables = `
+    const sql = `
       CREATE TABLE IF NOT EXISTS remedios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
         descripcion TEXT NOT NULL,
         dosis TEXT NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        email TEXT NOT NULL,
+        contrasena TEXT NOT NULL
+      );
     `;
 
-    if (this.db) {
+    if (this.dbInstance) {
       try {
-        await this.db.executeSql(tables, []);
+        await this.dbInstance.executeSql(sql, []);
         console.log('Tables created');
       } catch (e) {
         console.error('Error creating tables', e);
@@ -52,15 +75,49 @@ export class BddService {
     }
   }
 
-  async addRemedio(remedios: Clremedios): Promise<Clremedios> {
-    const query = `INSERT INTO remedios (nombre, descripcion, dosis) VALUES (?, ?, ?)`;
-    const values = [remedios.nombre, remedios.descripcion, remedios.dosis];
+  private startBackgroundSync() {
+    interval(600000)
+      .pipe(
+        switchMap(() => {
+          console.log('Iniciando sincronización de datos en segundo plano...');
+          return this.dataService.getRemedios();
+        })
+      )
+      .subscribe({
+        next: async (remedios) => {
+          await this.insertRemedios(remedios);
+          console.log('Sincronización de datos completada.');
+        },
+        error: (error) => {
+          console.error('Error durante la sincronización de datos:', error);
+        },
+      });
+  }
 
-    if (this.db) {
+  async insertRemedios(remedios: Clremedios[]) {
+    if (this.dbInstance) {
+      const sql = 'INSERT OR REPLACE INTO remedios (id, nombre, descripcion, dosis) VALUES (?, ?, ?, ?)';
+      for (const remedio of remedios) {
+        await this.dbInstance.executeSql(sql, [remedio.id, remedio.nombre, remedio.descripcion, remedio.dosis]);
+      }
+    }
+  }
+
+  async insertUsuarios(usuarios: Clusuarios[]) {
+    if (this.dbInstance) {
+      const sql = 'INSERT OR REPLACE INTO usuarios (id, nombre, email, contrasena) VALUES (?, ?, ?, ?)';
+      for (const usuario of usuarios) {
+        await this.dbInstance.executeSql(sql, [usuario.id, usuario.nombre, usuario.email, usuario.contrasena]);
+      }
+    }
+  }
+
+  async addRemedio(remedio: Clremedios): Promise<Clremedios> {
+    const sql = 'INSERT INTO remedios (nombre, descripcion, dosis) VALUES (?, ?, ?)';
+    if (this.dbInstance) {
       try {
-        await this.db.executeSql(query, values);
-        console.log('Remedio added:', remedios);
-        return remedios;
+        await this.dbInstance.executeSql(sql, [remedio.nombre, remedio.descripcion, remedio.dosis]);
+        return remedio;
       } catch (e) {
         console.error('Error adding remedio', e);
         throw e;
@@ -70,17 +127,30 @@ export class BddService {
     }
   }
 
-  async getRemedios(): Promise<Clremedios[]> {
-    const query = `SELECT * FROM remedios`;
-
-    if (this.db) {
+  async addUsuario(usuario: Clusuarios): Promise<Clusuarios> {
+    const sql = 'INSERT INTO usuarios (nombre, email, contrasena) VALUES (?, ?, ?)';
+    if (this.dbInstance) {
       try {
-        const res = await this.db.executeSql(query, []);
-        let remedios: Clremedios[] = [];
-        for (let i = 0; i < res.rows.length; i++) {
-          remedios.push(res.rows.item(i));
+        await this.dbInstance.executeSql(sql, [usuario.nombre, usuario.email, usuario.contrasena]);
+        return usuario;
+      } catch (e) {
+        console.error('Error adding usuario', e);
+        throw e;
+      }
+    } else {
+      throw new Error('Database is not initialized');
+    }
+  }
+
+  async getRemedios(): Promise<Clremedios[]> {
+    const sql = 'SELECT * FROM remedios';
+    if (this.dbInstance) {
+      try {
+        const result = await this.dbInstance.executeSql(sql, []);
+        const remedios: Clremedios[] = [];
+        for (let i = 0; i < result.rows.length; i++) {
+          remedios.push(result.rows.item(i));
         }
-        console.log('Fetched remedios:', remedios);
         return remedios;
       } catch (e) {
         console.error('Error fetching remedios', e);
@@ -91,20 +161,18 @@ export class BddService {
     }
   }
 
-  async getRemedio(id: number): Promise<Clremedios> {
-    const query = `SELECT * FROM remedios WHERE id = ?`;
-
-    if (this.db) {
+  async getUsuarios(): Promise<Clusuarios[]> {
+    const sql = 'SELECT * FROM usuarios';
+    if (this.dbInstance) {
       try {
-        const res = await this.db.executeSql(query, [id]);
-        if (res.rows.length > 0) {
-          console.log('Fetched remedio:', res.rows.item(0));
-          return res.rows.item(0);
-        } else {
-          throw new Error('No remedio found with id: ' + id);
+        const result = await this.dbInstance.executeSql(sql, []);
+        const usuarios: Clusuarios[] = [];
+        for (let i = 0; i < result.rows.length; i++) {
+          usuarios.push(result.rows.item(i));
         }
+        return usuarios;
       } catch (e) {
-        console.error('Error fetching remedio by id', e);
+        console.error('Error fetching usuarios', e);
         throw e;
       }
     } else {
@@ -112,38 +180,59 @@ export class BddService {
     }
   }
 
-  async deleteRemedio(id: number): Promise<number> {
-    const query = `DELETE FROM remedios WHERE id = ?`;
-
-    if (this.db) {
-      try {
-        await this.db.executeSql(query, [id]);
-        console.log('Deleted remedio with id:', id);
-        return id;
-      } catch (e) {
-        console.error('Error deleting remedio', e);
-        throw e;
+  async sincronizarRemedios(): Promise<void> {
+    const sql = 'SELECT * FROM remedios';
+    if (this.dbInstance) {
+      const result = await this.dbInstance.executeSql(sql, []);
+      
+      for (let i = 0; i < result.rows.length; i++) {
+        const remedio = result.rows.item(i);
+        
+        try {
+          const apiRemedio = await lastValueFrom(this.dataService.getRemedio(remedio.id));
+          
+          if (apiRemedio) {
+            await this.dbInstance.executeSql('DELETE FROM remedios WHERE id = ?', [remedio.id]);
+            console.log(`Remedio con id ${remedio.id} eliminado del almacenamiento local`);
+          }
+        } catch (error: unknown) {
+          if (error instanceof HttpErrorResponse && error.status === 404) {
+            await lastValueFrom(this.dataService.addRemedio(remedio));
+            console.log(`Remedio con id ${remedio.id} añadido al servidor`);
+            await this.dbInstance.executeSql('DELETE FROM remedios WHERE id = ?', [remedio.id]);
+          } else {
+            console.error(`Error al sincronizar el remedio con id ${remedio.id}:`, error);
+          }
+        }
       }
-    } else {
-      throw new Error('Database is not initialized');
     }
   }
 
-  async updateRemedio(id: number, remedios: Clremedios): Promise<Clremedios> {
-    const query = `UPDATE remedios SET nombre = ?, descripcion = ?, dosis = ? WHERE id = ?`;
-    const values = [remedios.nombre, remedios.descripcion, remedios.dosis, id];
-
-    if (this.db) {
-      try {
-        await this.db.executeSql(query, values);
-        console.log('Updated remedio with id:', id);
-        return remedios;
-      } catch (e) {
-        console.error('Error updating remedio', e);
-        throw e;
+  async sincronizarUsuarios(): Promise<void> {
+    const sql = 'SELECT * FROM usuarios';
+    if (this.dbInstance) {
+      const result = await this.dbInstance.executeSql(sql, []);
+      
+      for (let i = 0; i < result.rows.length; i++) {
+        const usuario = result.rows.item(i);
+        
+        try {
+          const apiUsuario = await lastValueFrom(this.dataService.getUsuario(usuario.id));
+          
+          if (apiUsuario) {
+            await this.dbInstance.executeSql('DELETE FROM usuarios WHERE id = ?', [usuario.id]);
+            console.log(`Usuario con id ${usuario.id} eliminado del almacenamiento local`);
+          }
+        } catch (error: unknown) {
+          if (error instanceof HttpErrorResponse && error.status === 404) {
+            await lastValueFrom(this.dataService.addUsuario(usuario));
+            console.log(`Usuario con id ${usuario.id} añadido al servidor`);
+            await this.dbInstance.executeSql('DELETE FROM usuarios WHERE id = ?', [usuario.id]);
+          } else {
+            console.error(`Error al sincronizar el usuario con id ${usuario.id}:`, error);
+          }
+        }
       }
-    } else {
-      throw new Error('Database is not initialized');
     }
   }
 }

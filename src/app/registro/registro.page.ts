@@ -1,64 +1,81 @@
-import { Component } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DataService } from '../remedios/data.service';
+import { BddService } from '../remedios/bdd.service';
+import { Clusuarios } from '../remedios/models/Clusuarios';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
 })
-export class RegistroPage {
+export class RegistroPage implements OnInit {
+  formularioRegistro: FormGroup;
 
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-    $(document).ready(() => {
-      $('#registrationForm').on('submit', (event: any) => {
-        event.preventDefault();
-        let isValid = true;
-
-        // Validaciones
-        if ($('#name').val().trim() === '') {
-          $('#name-error').text('El nombre es obligatorio.');
-          isValid = false;
-        } else {
-          $('#name-error').text('');
-        }
-
-        if ($('#surname').val().trim() === '') {
-          $('#surname-error').text('El apellido es obligatorio.');
-          isValid = false;
-        } else {
-          $('#surname-error').text('');
-        }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test($('#email').val().toString())) {
-          $('#email-error').text('Correo electrónico no es válido.');
-          isValid = false;
-        } else {
-          $('#email-error').text('');
-        }
-
-        const passwordPattern = /^(?=.*[A-Z])(?=.*\d{4,})(?=.*[a-zA-Z]{3,}).{8,}$/;
-        if (!passwordPattern.test($('#password').val().toString())) {
-          $('#password-error').text('La contraseña debe contener al menos 4 números, 3 caracteres y 1 mayúscula.');
-          isValid = false;
-        } else {
-          $('#password-error').text('');
-        }
-
-        if (isValid) {
-          const navigationExtras: NavigationExtras = {
-            state: {
-              name: $('#name').val(),
-              surname: $('#surname').val(),
-              email: $('#email').val(),
-            }
-          };
-          this.router.navigate(['success-page'], navigationExtras);
-        }
-      });
+  constructor(
+    private fb: FormBuilder,
+    private loadingController: LoadingController,
+    private dataService: DataService,
+    private router: Router,
+    private alertController: AlertController,
+    private bddService: BddService,
+  ) {
+    this.formularioRegistro = this.fb.group({
+      nombre: ['', Validators.required],
+      email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}')]],
+      contrasena: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,}')]]
     });
+  }
+
+
+  ngOnInit() {}
+
+  async register() {
+    if (this.formularioRegistro.valid) {
+      console.log('Formulario válido, guardando...', this.formularioRegistro.value);
+      const loading = await this.loadingController.create({
+        message: 'Cargando...',
+      });
+      await loading.present();
+
+      const nuevoUsuario = new Clusuarios({
+        nombre: this.formularioRegistro.value.nombre,
+        email: this.formularioRegistro.value.email,
+        contrasena: this.formularioRegistro.value.contrasena
+      });
+
+      try {
+        await this.bddService.addUsuario(nuevoUsuario);
+        await this.bddService.sincronizarUsuarios();
+        
+        loading.dismiss();
+        
+        const alerta = await this.alertController.create({
+          header: 'Información',
+          message: 'Usuario creado con éxito',
+          buttons: ['OK']
+        });
+        
+        await alerta.present();
+        await alerta.onDidDismiss();
+        this.router.navigate(['/login']);
+      } catch (error) {
+        console.error('Error al agregar usuario:', error);
+        loading.dismiss();
+        
+        const alertaError = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudo crear el usuario',
+          buttons: ['OK']
+        });
+        
+        await alertaError.present();
+      }
+    } else {
+      console.log('Formulario no válido, revisa los campos.');
+      this.formularioRegistro.markAllAsTouched();
+    }
   }
 }
