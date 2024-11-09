@@ -1,29 +1,11 @@
-/* Estilos para el menú */
-ion-menu {
-    --min-width: 200px;
-  }
-  
-  /* Estilos para el botón del menú en el header */
-  ion-buttons {
-    ion-menu-button {
-      --color: #3880ff;
-    }
-  }
-  
-  /* Estilos para el contenido del menú */
-  ion-menu ion-content {
-    padding: 10px;
-  }
-  
-  ion-menu ion-list {
-    padding: 0;
-  }
-  
-  ion-menu ion-item {
-    --background: #f8f8f8;
-    --color: #000;
-  }
-  
-  ion-menu ion-item:hover {
-    --background: #e0e0e0;
-  }
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.image-container img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 10px;
+}

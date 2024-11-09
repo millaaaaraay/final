@@ -1,195 +1,64 @@
-/* Fondo con degradado claro */
-.background-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #93cdab 0%, #d8f06b 100%);
-  z-index: -1;
-}
-
-/* Contenedor centralizado */
-.welcome-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  text-align: center;
-  color: white;
-}
-
-/* Imagen del logo más pequeño */
-.logo {
-  width: 80px; /* Tamaño reducido */
-  margin-bottom: 20px;
-  border-radius: 50%;
-  border: 2px solid rgb(255, 0, 0);
-}
-
-/* Texto animado */
-.animated-text {
-  font-size: 28px;
-  animation: fadeIn 2s ease-in-out forwards;
-  color: #1d2a45;
-}
-
-/* Subtítulo o slogan */
-.sub-text {
-  font-size: 16px;
-  margin-top: 10px;
-  color: #1d2a45;
-  animation: fadeIn 3s ease-in-out forwards;
-}
-
-/* Botón de inicio sin animación */
-.start-button {
-  margin-top: 40px;
-  --background: #5bb416;
-  color: #f1f1f1;
-  font-weight: bold;
-}
-
-/* Animación de aparición suave */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Estilos generales para el contenedor de la página de inicio de sesión */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: relative; /* Asegura que los elementos absolutos se posicionen correctamente */
-}
-
-/* Estilo para el contenido de la página de inicio de sesión */
+/* Estilos generales para la página de inicio de sesión */
 .login-page {
-  --background: #f4f4f4; /* Fondo de la página de inicio de sesión */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px;
-}
-
-/* Estilo para el icono de la salud en la parte superior */
-.logo-container {
-  margin-bottom: 24px;
-}
-
-.logo-container ion-icon {
-  font-size: 48px;
-  color: #3880ff; /* Color del icono */
-}
-
-/* Estilo para la imagen en la parte superior del título */
-.image-container {
-  display: flex;
-  justify-content: center;
-  margin: 16px 0;
-  width: 100%; /* Asegura que el contenedor use el ancho completo disponible */
-}
-
-.image-container img {
-  max-width: 60%; /* Ajusta el porcentaje según sea necesario */
-  height: auto; /* Mantiene la proporción de la imagen */
-  max-height: 150px; /* Ajusta la altura máxima según sea necesario */
-}
-
-/* Estilo para la tarjeta de inicio de sesión */
-.login-card {
-  width: 100%;
-  max-width: 400px;
-  margin-top: 16px;
-  border-radius: 8px;
-}
-
-/* Estilo para los campos de entrada */
-.login-input {
-  margin-bottom: 16px;
-}
-
-.input-label {
-  color: #1d2a45; /* Color azul oscuro para las etiquetas de entrada */
-}
-
-.input-field {
-  --background: #fff;
-  --placeholder-color: black; /* Cambia el color del placeholder a negro */
-  --color: black;
-}
-
-/* Estilo para los mensajes de error */
-.error-message {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 4px;
-}
-
-/* Estilo para los botones */
-.login-button, .register-button {
-  --border-color: transparent; /* Quita los bordes de otros colores */
-  --box-shadow: none; /* Quita cualquier sombra si hay */
-}
-
-.login-button {
-  margin-top: 16px;
-}
-
-.register-button {
-  margin-top: 8px;
-}
-
-/* Estilo para el botón de recuperación de contraseña */
-#open-modal {
-  margin-top: 16px;
-}
-
-/* Estilo para el botón de volver */
-.back-button {
-  margin-top: 24px;
-  position: absolute; /* Asegúrate de que el botón esté en una posición específica */
-  bottom: 16px; /* Ajusta la posición desde el fondo de la pantalla si es necesario */
-  left: 16px; /* Ajusta la posición desde el lado izquierdo si es necesario */
-  width: calc(100% - 32px); /* Ajusta el ancho del botón considerando el margen */
-  display: flex;
-  justify-content: center; /* Centra el botón horizontalmente */
-}
-
-.back-button ion-button {
-  color: #3880ff; /* Color del texto del botón */
-  --background: transparent; /* Fondo transparente para que no tape otros elementos */
-  --border-color: #3880ff; /* Color del borde */
-}
-
-/* Estilo para el modal de recuperación de contraseña */
-ion-modal {
-  --border-radius: 8px;
-}
-
-.modal-confirm-button {
-  --border-color: transparent; /* Quita los bordes de otros colores */
-  --box-shadow: none; /* Quita cualquier sombra si hay */
-}
-
-/* Estilo para la imagen animada dentro del modal */
-.animated-image-container {
-  display: flex;
-  justify-content: center;
-  margin: 16px 0;
-}
-
-.animated-image {
-  max-width: 100%;
-  height: auto;
-  opacity: 0; /* Inicialmente oculta la imagen */
-  animation: fadeIn 2s ease-in-out forwards; /* Aplicar animación */
-}
+    padding: 16px; /* Espacio alrededor de la página */
+    background-color: #e0e0e0c8; /* Color de fondo suave */
+  }
+  
+  /* Estilo para la tarjeta */
+  .card-style {
+    margin: auto; /* Centra la tarjeta */
+    max-width: 400px; /* Limita el ancho de la tarjeta */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  }
+  
+  /* Título de la aplicación */
+  .app-title {
+    font-size: 32px; /* Tamaño de fuente para el título de la aplicación */
+    font-weight: bold; /* Negrita */
+    color: #333; /* Color del texto */
+    margin: 0; /* Elimina el margen alrededor del título */
+  }
+  
+  /* Título de bienvenida */
+  .welcome-title {
+    font-size: 24px; /* Tamaño de fuente del título de bienvenida */
+    font-weight: bold; /* Negrita */
+    color: #333; /* Color del texto */
+    margin: 16px 0; /* Margen arriba y abajo */
+  }
+  
+  /* Espaciado de los botones */
+  .login-button,
+  .register-button {
+    margin-top: 10px; /* Margen entre los botones */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+  
+  /* Estilo para los campos de entrada */
+  ion-item {
+    margin-bottom: 16px; /* Espaciado entre los campos de entrada */
+  }
+  
+  /* Estilo de los íconos */
+  ion-icon {
+    color: #888; /* Color de los íconos */
+  }
+  
+  /* Ajustes de color para los botones */
+  .login-button {
+    background-color: #3880ff; /* Color de fondo del botón de ingreso */
+    color: rgb(255, 255, 255); /* Color del texto */
+  }
+  
+  .register-button {
+    background-color: #ffc107; /* Color de fondo del botón de registro */
+    color: rgb(255, 255, 255); /* Color del texto */
+  }
+  
+  /* Hover effect para los botones */
+  .login-button:hover,
+  .register-button:hover {
+    opacity: 0.9; /* Efecto de opacidad al pasar el ratón */
+  }
+  

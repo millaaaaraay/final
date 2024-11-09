@@ -10,26 +10,44 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">remedios-add</ion-title>
+      <ion-title size="large">Nuevo Remedio</ion-title>
     </ion-toolbar>
   </ion-header>
-</ion-content>
 
-<ion-content padding>
-  <form [formGroup]="productForm" (ngSubmit)="onFormSubmit(productForm.value)">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" [(ngModel)]="remedios.nombre" formControlName="rem_nombre"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-textarea [(ngModel)]="remedios.descripcion" formControlName="rem_desc"></ion-textarea>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Dosis</ion-label>
-      <ion-input type="number" [(ngModel)]="remedios.dosis" formControlName="rem_dosis"></ion-input>
-    </ion-item>
-    <ion-button type="submit" shape="round" color="primary" expand="block"
-      [disabled]="!productForm.valid">Submit</ion-button>
-  </form>
+  <ion-content class="ion-padding">
+    <form [formGroup]="productForm" (ngSubmit)="onFormSubmit(productForm.value)">
+      <ion-list>
+
+        <!-- Campo Nombre -->
+        <ion-item>
+          <ion-label position="floating">Nombre del Remedio</ion-label>
+          <ion-input type="text" formControlName="rem_nombre" [(ngModel)]="remedios.nombre"></ion-input>
+        </ion-item>
+
+        <!-- Campo Descripción -->
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-textarea formControlName="rem_desc" [(ngModel)]="remedios.descripcion"></ion-textarea>
+        </ion-item>
+
+        <!-- Campo Dosis -->
+        <ion-item>
+          <ion-label position="floating">Dosis (mg)</ion-label>
+          <ion-textarea formControlName="rem_dosis" [(ngModel)]="remedios.dosis"></ion-textarea>
+        </ion-item>
+
+      </ion-list>
+
+      <!-- Botón de Submit -->
+      <ion-button type="submit" expand="block" shape="round" color="primary" [disabled]="!productForm.valid">
+        Guardar Remedio
+      </ion-button>
+
+      <!-- Imagen debajo del botón -->
+      <div class="image-container">
+        <img src="assets/icon/remedios.jpg" alt="Remedio" />
+      </div>
+
+    </form>
+  </ion-content>
 </ion-content>

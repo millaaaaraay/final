@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { NavigationExtras, Router } from '@angular/router';
-import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { ApiguardService } from '../services/apiguard.service';
 
 @Component({
   selector: 'app-login',
@@ -9,73 +11,68 @@ import { OverlayEventDetail } from '@ionic/core/components';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  formLogin: FormGroup;
+  isModalOpen = false;
 
-  @ViewChild(IonModal, { static: false }) modal!: IonModal;
+  constructor(
+    private modalCtrl: ModalController,
+    private router: Router,
+    private fbl: FormBuilder,
+    private navCtrl: NavController,
+    private toastController: ToastController,
+    private Storage: AuthService,
+    private apiGuard: ApiguardService
+  ) {
+    this.formLogin = this.fbl.group({
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}')]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,}')]]
+    });
+  }
 
-  email: string = '';
-  password: string = '';
-  emailError: string = '';
-  passwordError: string = '';
-  message: string = '';
+  ngOnInit(): void {
+    this.checkLoginStatus();
+  }
 
-  constructor(private router: Router) {}
+  async checkLoginStatus() {
+    const isLoggedIn = await this.Storage.isLoggedIn();
+    if (isLoggedIn) {
+      this.router.navigate(['/index']);
+    }
+  }
 
-  ngOnInit(): void {}
+  async onLogin() {
+    const userForm: string = this.formLogin.value.username;
+    const passForm: string = this.formLogin.value.password;
 
-  // Maneja el inicio de sesión
-  login() {
-    this.emailError = '';
-    this.passwordError = '';
-
-    // Validar el correo electrónico
-    if (!this.isValidEmail(this.email)) {
-      this.emailError = 'Correo inválido';
-    } 
-    
-    // Validar la contraseña con el patrón
-    const passwordPattern = /^(?=.*[A-Z])(?=.*\d{4,})(?=.*[a-zA-Z]{3,}).{8,}$/;
-    if (!passwordPattern.test(this.password)) {
-      this.passwordError = 'La contraseña debe contener al menos 4 números, 3 caracteres y 1 mayúscula.';
-    } else if (this.email === 'benja@gmail.com' && this.password === 'Benj1234') {
-      const navigationExtras: NavigationExtras = {
-        state: {
-          email: this.email
-        }
-      };
-      this.router.navigate(['index'], navigationExtras);
+    if (this.formLogin.valid) {
+      console.log('Formulario válido, guardando...', this.formLogin.value);
+      const loggedIn = await this.apiGuard.login(userForm, passForm);
+      
+      if (loggedIn) {
+        await this.Storage.saveSession(userForm);
+        console.log('Usuario Autenticado');
+        let navExtra: NavigationExtras = { 
+          state: { user: this.formLogin.value.username } 
+        };
+        this.router.navigate(['/index'], navExtra);
+      }
     } else {
-      this.router.navigate(['index']);
+      console.log('Formulario no válido, revisa los campos.');
+      this.formLogin.markAllAsTouched();
+      await this.presentToast('Por favor revisa los campos del formulario');
     }
   }
 
-  // Función para validar el correo electrónico
-  isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color: 'danger'
+    });
+    toast.present();
   }
 
-  // Función para manejar el cierre del modal
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  // Función para confirmar la recuperación de contraseña
-  confirm() {
-    if (this.isValidEmail(this.email)) {
-      this.modal.dismiss(this.email, 'confirm');
-    }
-  }
-
-  // Maneja el evento de cierre del modal
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      this.message = `A reset link has been sent to ${ev.detail.data}!`;
-    }
-  }
-
-  // Navega a la página de registro
-  goToRegistro() {
+  registrar() {
     this.router.navigate(['/registro']);
   }
 }

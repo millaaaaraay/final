@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { Clremedios } from '../models/CLremedios';
-
 import { DataService } from '../data.service';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 @Component({
   selector: 'app-remedios-add',
@@ -12,62 +12,88 @@ import { DataService } from '../data.service';
   styleUrls: ['./remedios-add.page.scss'],
 })
 export class RemediosAddPage implements OnInit {
-
+  
   productForm!: FormGroup;
-
-  remedios : Clremedios = {
-    id : 11,
-    nombre: 'clonazepam',
-    descripcion: 'relajante',
-    dosis: '2mg'
-  }
+  remedios: Clremedios = {
+    id: 0, 
+    nombre: '',
+    descripcion: '',
+    dosis: ''
+  };
 
   constructor(
     private formBuilder: FormBuilder,
     private loadingController: LoadingController,
     private restApi: DataService,
     private router: Router,
-  ) { }
+    private sqlite: SQLite
+  ) {}
 
   ngOnInit() {
-
     this.productForm = this.formBuilder.group({
-      "rem_nombre": [null, Validators.required],
-      'rem_desc': [null, Validators.required],
-      'rem_dosis': [null, Validators.required]
+      rem_nombre: [null, Validators.required],
+      rem_desc: [null, Validators.required],
+      rem_dosis: [null, Validators.required]
     });
+
+    this.initializeDatabase();
+  }
+
+  async initializeDatabase() {
+    try {
+      const db: SQLiteObject = await this.sqlite.create({
+        name: 'remedios.db',
+        location: 'default'
+      });
+
+      await db.executeSql('CREATE TABLE IF NOT EXISTS remedios (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, descripcion TEXT, dosis TEXT)', []);
+    } catch (error) {
+      console.error('Error al inicializar la base de datos', error);
+    }
   }
 
   async onFormSubmit(form: NgForm) {
-    console.log("onFormSubmit del Product ADD")
-
-    // Creamos un Loading Controller, Ojo no lo muestra
     const loading = await this.loadingController.create({
-      message: 'Loading...'
+      message: 'Cargando...',
     });
-    // Muestra el Loading Controller
     await loading.present();
 
-    // Ejecuta el método del servicio y los suscribe
-    await this.restApi.addRemedio(this.remedios)
-      .subscribe({
-        next: (res) => {
-          console.log("Next AddProduct Page",res)
-          loading.dismiss(); //Elimina la espera
-          if (res== null){ // No viene respuesta del registro
-            console.log("Next No Agrego, Ress Null ");
-            return
-          }
-          // Si viene respuesta
-          console.log("Next Agrego SIIIIII Router saltaré ;",this.router);
+    // Verificar si el formulario es inválido
+    if (this.productForm.invalid) {
+      loading.dismiss();
+      return; // Salir si el formulario es inválido
+    }
+
+    // Asignar valores del formulario al objeto remedios
+    this.remedios.nombre = this.productForm.value.rem_nombre;
+    this.remedios.descripcion = this.productForm.value.rem_desc;
+    this.remedios.dosis = this.productForm.value.rem_dosis;
+
+    try {
+      const db: SQLiteObject = await this.sqlite.create({
+        name: 'remedios.db',
+        location: 'default'
+      });
+
+      // Guardar en SQLite
+      await db.executeSql('INSERT INTO remedios (nombre, descripcion, dosis) VALUES (?, ?, ?)', 
+        [this.remedios.nombre, this.remedios.descripcion, this.remedios.dosis]);
+
+      // Enviar los datos a JSON Server
+      this.restApi.addRemedio(this.remedios).subscribe({
+        next: async (res) => {
+          console.log('Remedio guardado en JSON Server:', res);
+          loading.dismiss();
           this.router.navigate(['/product-list']);
-        }
-        , complete: () => { }
-        , error: (err) => {
-          console.log("Error AddProduct Página",err);
-          loading.dismiss(); //Elimina la espera
+        },
+        error: (err) => {
+          loading.dismiss();
+          console.error('Error en la llamada a la API', err);
         }
       });
-    console.log("Observe que todo lo del suscribe sale después de este mensaje")
+    } catch (error) {
+      loading.dismiss();
+      console.error('Error al guardar el remedio', error);
+    }
   }
 }

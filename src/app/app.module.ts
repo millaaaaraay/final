@@ -2,7 +2,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Importamos BrowserAnimationsModule
@@ -20,6 +21,7 @@ import { RemediosEditPage } from './remedios/remedios-edit/remedios-edit.page';
     IonicModule.forRoot(),
     IonicModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     // Agregamos IonicStorageModule aquí
@@ -28,6 +30,7 @@ import { RemediosEditPage } from './remedios/remedios-edit/remedios-edit.page';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    SQLite,
   ],
   bootstrap: [AppComponent],
 })

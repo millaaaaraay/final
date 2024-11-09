@@ -1,100 +1,33 @@
-<div class="login-container">
-  <ion-content [fullscreen]="true" class="login-page">
-    <div class="logo-container">
-      <!-- Icono relacionado con la salud -->
-      <ion-icon name="heart-circle-outline"></ion-icon>
-    </div>
+<ion-content class="login-page">
+  <ion-title class="ion-padding-top ion-text-center">
+    <ion-label>
+      <h1 class="app-title">CHEKATUSALUD</h1>
+    </ion-label>
+  </ion-title>
 
-    <div class="image-container">
-      <!-- Imagen en la parte superior del título -->
-      <img src="../assets/icon/iniciosesion.jpg" alt="Imagen de inicio de sesión" />
-    </div>
-
-    <ion-card class="login-card">
-      <ion-card-header>
-        <ion-card-title>INICIAR SESIÓN</ion-card-title>
-      </ion-card-header>
+  <div class="ion-padding-vertical">
+    <ion-card class="ion-text-center card-style">
+      <ion-card-title>
+        <ion-label>
+          <h2 class="welcome-title">¡Bienvenido!</h2>
+        </ion-label>
+      </ion-card-title>
       <ion-card-content>
-        <form (ngSubmit)="login()">
-          <ion-item class="login-input">
-            <ion-icon name="mail-unread-outline" slot="start"></ion-icon>
-            <ion-label position="floating" class="input-label">Correo</ion-label>
-            <ion-input
-              class="input-field"
-              type="email"
-              [(ngModel)]="email"
-              name="email"
-              placeholder="Ingresa tu correo electrónico"
-            ></ion-input>
+        <form [formGroup]="formLogin">
+          <ion-item>
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Usuario</ion-label>
+            <ion-input type="email" formControlName="username"></ion-input>
           </ion-item>
-          <div *ngIf="emailError" class="error-message">{{ emailError }}</div>
-
-          <ion-item class="login-input">
-            <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
-            <ion-label position="floating" class="input-label">Contraseña</ion-label>
-            <ion-input
-              class="input-field"
-              type="password"
-              [(ngModel)]="password"
-              name="password"
-              placeholder="Ingresa tu contraseña"
-            ></ion-input>
+          <ion-item>
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
           </ion-item>
-          <div *ngIf="passwordError" class="error-message">{{ passwordError }}</div>
-
-          <ion-button type="submit" class="login-button" expand="full" color="primary">
-            Ingresar
-          </ion-button>
         </form>
-
-        <ion-button fill="clear" size="small" id="open-modal" expand="block">Recuperar Contraseña</ion-button>
-
-        <div class="login-actions">
-          <ion-button (click)="goToRegistro()" class="register-button" expand="full" color="secondary">
-            Registrarse
-          </ion-button>
-        </div>
-
-        <ion-content class="ion-padding">
-          <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-            <ng-template>
-              <ion-header>
-                <ion-toolbar>
-                  <ion-buttons slot="start">
-                    <ion-button (click)="cancel()">Cancelar</ion-button>
-                  </ion-buttons>
-                  <ion-title>Recuperar Clave</ion-title>
-                  <ion-buttons slot="end">
-                    <ion-button (click)="confirm()" [disabled]="!isValidEmail(email)" [strong]="true" class="modal-confirm-button">
-                      Confirmar
-                    </ion-button>
-                  </ion-buttons>
-                </ion-toolbar>
-              </ion-header>
-              <ion-content class="ion-padding">
-                <ion-item>
-                  <ion-input
-                    label="Introduce tu correo"
-                    labelPlacement="stacked"
-                    type="email"
-                    placeholder="Tu correo electrónico"
-                    [(ngModel)]="email"
-                    name="recoverEmail"
-                  ></ion-input>
-                </ion-item>
-                <!-- Imagen animada dentro del modal -->
-                <div class="animated-image-container">
-                  <img src="../assets/icon/contraseña.jpg" alt="Imagen Animada" class="animated-image" />
-                </div>
-              </ion-content>
-            </ng-template>
-          </ion-modal>
-        </ion-content>
       </ion-card-content>
+      <ion-button shape="block" class="login-button" (click)="onLogin()">Ingresar</ion-button>
+      <ion-button shape="block" class="register-button" (click)="registrar()">Registrarse</ion-button>
     </ion-card>
-
-    <div class="back-button">
-      <ion-button [routerLink]="['/home']" fill="clear" size="small">Volver</ion-button>
-    </div>
-  </ion-content>
-</div>
+  </div>
+</ion-content>

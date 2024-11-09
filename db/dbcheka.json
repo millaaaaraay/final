@@ -4,48 +4,41 @@
       "id": "11",
       "nombre": "clonazepam",
       "descripcion": "relajante",
-      "dosis": "2mg"
+      "dosis": "2"
     },
     {
       "id": "12",
       "nombre": "aspirina",
       "descripcion": "antiinflamatorio",
-      "dosis": "2mg"
+      "dosis": "2"
     },
     {
-      "id": 11,
-      "nombre": "clonazeparfrvdbggf",
-      "descripcion": "relajantek",
-      "dosis": 333
+      "id": "11",
+      "nombre": "paracetamol",
+      "descripcion": "dolor",
+      "dosis": 20
     },
     {
-      "id": 11,
-      "nombre": "paracetamool",
-      "descripcion": "dolor de cabeza",
-      "dosis": 5
+      "id": "d1da"
+    },
+    {
+      "id": "032b"
     }
   ],
-  "Rutinas": [
+  "rutinas": [
     {
       "id": "21",
       "tipo": "flexibilidad",
       "ejercicio1": "elongacion de cuello",
       "ejercicio2": "movimiento del gato"
-    },
-    {
-      "id": "22",
-      "tipo": "Movimiento articular",
-      "ejercicio1": "movimiento  de cabeza",
-      "ejercicio2": "movimiento de manos"
     }
   ],
   "usuarios": [
     {
       "id": "benja@gmail.com",
-      "first_name": "benjamin",
-      "last_name": "contreras",
+      "nombre": "benjamin",
       "email": "benja@gmail.com",
-      "clave": "112233"
+      "contrasena": "Abcdef1!"
     }
   ]
 }

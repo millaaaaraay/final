@@ -1,29 +1,28 @@
-/* Estilos para el menú */
-ion-menu {
-    --min-width: 200px;
+.submit-btn {
+  margin-top: 20px;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.animated-image {
+  width: 150px;
+  height: 150px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
   }
-  
-  /* Estilos para el botón del menú en el header */
-  ion-buttons {
-    ion-menu-button {
-      --color: #3880ff;
-    }
+  40% {
+    transform: translateY(-20px);
   }
-  
-  /* Estilos para el contenido del menú */
-  ion-menu ion-content {
-    padding: 10px;
+  60% {
+    transform: translateY(-10px);
   }
-  
-  ion-menu ion-list {
-    padding: 0;
-  }
-  
-  ion-menu ion-item {
-    --background: #f8f8f8;
-    --color: #000;
-  }
-  
-  ion-menu ion-item:hover {
-    --background: #e0e0e0;
-  }
+}
