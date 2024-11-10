@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 
 import { authGuard } from './auth.guard';
 
