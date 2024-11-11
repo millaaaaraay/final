@@ -1,28 +1,10 @@
 {
   "remedios": [
     {
-      "id": "11",
+      "id": "1",
       "nombre": "clonazepam",
       "descripcion": "relajante",
       "dosis": "2"
-    },
-    {
-      "id": "12",
-      "nombre": "aspirina",
-      "descripcion": "antiinflamatorio",
-      "dosis": "2"
-    },
-    {
-      "id": "11",
-      "nombre": "paracetamol",
-      "descripcion": "dolor",
-      "dosis": 20
-    },
-    {
-      "id": "d1da"
-    },
-    {
-      "id": "032b"
     }
   ],
   "rutinas": [

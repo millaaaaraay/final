@@ -21,6 +21,7 @@ export class AppComponent {
     private platform: Platform
   
   ) {
+    this.initializeApp();
     this.initStorage();
   }
 
@@ -40,7 +41,7 @@ export class AppComponent {
 
   async crearDB() {
     this.sqlite.create({
-      name: 'serviceseekpersistencia.db', // Nombre de la base de datos
+      name: 'data.db', // Nombre de la base de datos
       location: 'default', // Ubicación de la base de datos
     }).then((db) => {
       this.dbinstance.setDb(db); // Asignar la instancia de la base de datos a la propiedad dbinstance

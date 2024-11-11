@@ -13,6 +13,7 @@ import { Clusuarios } from '../remedios/models/Clusuarios';
 })
 export class RegistroPage implements OnInit {
   formularioRegistro: FormGroup;
+  maxId = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -29,8 +30,7 @@ export class RegistroPage implements OnInit {
     });
   }
 
-
-  ngOnInit() {}
+  ngOnInit() { }
 
   async register() {
     if (this.formularioRegistro.valid) {
@@ -40,39 +40,54 @@ export class RegistroPage implements OnInit {
       });
       await loading.present();
 
-      const nuevoUsuario = new Clusuarios({
-        nombre: this.formularioRegistro.value.nombre,
-        email: this.formularioRegistro.value.email,
-        contrasena: this.formularioRegistro.value.contrasena
-      });
+      this.dataService.getUsuarios().subscribe({
+        next: (usuarios) => {
+          if (usuarios && usuarios.length > 0) {
+            this.maxId = Math.max(...usuarios.map(u => u.id));
+          }
+        },
+        complete: async () => {
+          const nuevoUsuario = new Clusuarios({
+            id: this.maxId + 1,
+            nombre: this.formularioRegistro.value.nombre,
+            email: this.formularioRegistro.value.email,
+            contrasena: this.formularioRegistro.value.contrasena
+          });
 
-      try {
-        await this.bddService.addUsuario(nuevoUsuario);
-        await this.bddService.sincronizarUsuarios();
-        
-        loading.dismiss();
-        
-        const alerta = await this.alertController.create({
-          header: 'Información',
-          message: 'Usuario creado con éxito',
-          buttons: ['OK']
-        });
-        
-        await alerta.present();
-        await alerta.onDidDismiss();
-        this.router.navigate(['/login']);
-      } catch (error) {
-        console.error('Error al agregar usuario:', error);
-        loading.dismiss();
-        
-        const alertaError = await this.alertController.create({
-          header: 'Error',
-          message: 'No se pudo crear el usuario',
-          buttons: ['OK']
-        });
-        
-        await alertaError.present();
-      }
+          this.dataService.addUsuario(nuevoUsuario).subscribe({
+            next: async (data) => {
+              console.log('Data: ', data);
+              loading.dismiss();
+              
+              if (data == null) {
+                console.log('No se añadieron datos, data = null');
+                return;
+              } else {
+                const alerta = await this.alertController.create({
+                  header: 'Información',
+                  message: 'Usuario creado con éxito',
+                  buttons: ['OK']
+                });
+
+                await this.bddService.addUsuario(nuevoUsuario);
+                await this.bddService.sincronizarUsuarios();
+                
+                await alerta.present();
+                await alerta.onDidDismiss();
+                window.location.reload();
+              }
+            },
+            error: (error) => {
+              console.error('Error al agregar usuario:', error);
+              loading.dismiss();
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error al obtener usuarios para el cálculo de ID:', error);
+          loading.dismiss();
+        }
+      });
     } else {
       console.log('Formulario no válido, revisa los campos.');
       this.formularioRegistro.markAllAsTouched();

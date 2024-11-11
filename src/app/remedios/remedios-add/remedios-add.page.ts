@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
-import { Clremedios } from '../models/CLremedios';
 import { DataService } from '../data.service';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { BddService } from '../bdd.service';
+import { Clremedios } from '../models/CLremedios';
 
 @Component({
   selector: 'app-remedios-add',
@@ -12,88 +12,85 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
   styleUrls: ['./remedios-add.page.scss'],
 })
 export class RemediosAddPage implements OnInit {
-  
-  productForm!: FormGroup;
-  remedios: Clremedios = {
-    id: 0, 
-    nombre: '',
-    descripcion: '',
-    dosis: ''
-  };
+  productForm: FormGroup;
+  maxId = 0;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private loadingController: LoadingController,
-    private restApi: DataService,
+    private dataService: DataService,
     private router: Router,
-    private sqlite: SQLite
-  ) {}
-
-  ngOnInit() {
-    this.productForm = this.formBuilder.group({
-      rem_nombre: [null, Validators.required],
-      rem_desc: [null, Validators.required],
-      rem_dosis: [null, Validators.required]
+    private alertController: AlertController,
+    private bddService: BddService,
+  ) {
+    this.productForm = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      dosis: ['', Validators.required]
     });
-
-    this.initializeDatabase();
   }
 
-  async initializeDatabase() {
-    try {
-      const db: SQLiteObject = await this.sqlite.create({
-        name: 'remedios.db',
-        location: 'default'
+  ngOnInit() { }
+
+  async onFormSubmit() {
+    if (this.productForm.valid) {
+      console.log('Formulario válido, guardando...', this.productForm.value);
+      const loading = await this.loadingController.create({
+        message: 'Cargando...',
       });
+      await loading.present();
 
-      await db.executeSql('CREATE TABLE IF NOT EXISTS remedios (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, descripcion TEXT, dosis TEXT)', []);
-    } catch (error) {
-      console.error('Error al inicializar la base de datos', error);
-    }
-  }
-
-  async onFormSubmit(form: NgForm) {
-    const loading = await this.loadingController.create({
-      message: 'Cargando...',
-    });
-    await loading.present();
-
-    // Verificar si el formulario es inválido
-    if (this.productForm.invalid) {
-      loading.dismiss();
-      return; // Salir si el formulario es inválido
-    }
-
-    // Asignar valores del formulario al objeto remedios
-    this.remedios.nombre = this.productForm.value.rem_nombre;
-    this.remedios.descripcion = this.productForm.value.rem_desc;
-    this.remedios.dosis = this.productForm.value.rem_dosis;
-
-    try {
-      const db: SQLiteObject = await this.sqlite.create({
-        name: 'remedios.db',
-        location: 'default'
-      });
-
-      // Guardar en SQLite
-      await db.executeSql('INSERT INTO remedios (nombre, descripcion, dosis) VALUES (?, ?, ?)', 
-        [this.remedios.nombre, this.remedios.descripcion, this.remedios.dosis]);
-
-      // Enviar los datos a JSON Server
-      this.restApi.addRemedio(this.remedios).subscribe({
-        next: async (res) => {
-          console.log('Remedio guardado en JSON Server:', res);
-          loading.dismiss();
-          this.router.navigate(['/product-list']);
+      this.dataService.getRemedios().subscribe({
+        next: (remedios) => {
+          if (remedios && remedios.length > 0) {
+            this.maxId = Math.max(...remedios.map(r => r.id));
+          }
         },
-        error: (err) => {
+        complete: async () => {
+          const nuevoRemedio = new Clremedios({
+            id: this.maxId + 1,
+            nombre: this.productForm.value.nombre,
+            descripcion: this.productForm.value.descripcion,
+            dosis: this.productForm.value.dosis
+          });
+
+          this.dataService.addRemedio(nuevoRemedio).subscribe({
+            next: async (data) => {
+              console.log('Data: ', data);
+              loading.dismiss();
+
+              if (data == null) {
+                console.log('No se añadieron datos, data = null');
+                return;
+              } else {
+                const alerta = await this.alertController.create({
+                  header: 'Información',
+                  message: 'Remedio creado con éxito',
+                  buttons: ['OK']
+                });
+
+                await this.bddService.addRemedio(nuevoRemedio);
+                await this.bddService.sincronizarRemedios();
+
+                await alerta.present();
+                await alerta.onDidDismiss();
+                window.location.reload();
+              }
+            },
+            error: (error) => {
+              console.error('Error al agregar remedio:', error);
+              loading.dismiss();
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error al obtener remedios para el cálculo de ID:', error);
           loading.dismiss();
-          console.error('Error en la llamada a la API', err);
         }
       });
-    } catch (error) {
-      loading.dismiss();
-      console.error('Error al guardar el remedio', error);
+    } else {
+      console.log('Formulario no válido, revisa los campos.');
+      this.productForm.markAllAsTouched();
     }
   }
 }
