@@ -1,33 +1,28 @@
-<ion-content class="login-page">
-  <ion-title class="ion-padding-top ion-text-center">
-    <ion-label>
-      <h1 class="app-title">CHEKATUSALUD</h1>
-    </ion-label>
-  </ion-title>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <div class="ion-padding-vertical">
-    <ion-card class="ion-text-center card-style">
-      <ion-card-title>
-        <ion-label>
-          <h2 class="welcome-title">¡Bienvenido!</h2>
-        </ion-label>
-      </ion-card-title>
-      <ion-card-content>
-        <form [formGroup]="formLogin">
-          <ion-item>
-            <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-label position="floating">Usuario</ion-label>
-            <ion-input type="email" formControlName="username"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-            <ion-label position="floating">Contraseña</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
-        </form>
-      </ion-card-content>
-      <ion-button shape="block" class="login-button" (click)="onLogin()">Ingresar</ion-button>
-      <ion-button shape="block" class="register-button" (click)="registrar()">Registrarse</ion-button>
-    </ion-card>
-  </div>
+<ion-content class="ion-padding">
+  <form [formGroup]="formLogin" (ngSubmit)="onLogin()">
+    <ion-item>
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input formControlName="username" type="email"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="formLogin.get('username')?.invalid && formLogin.get('username')?.touched" color="danger">
+      Ingresa un correo válido.
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="formLogin.get('password')?.invalid && formLogin.get('password')?.touched" color="danger">
+      La contraseña debe tener al menos 6 caracteres.
+    </ion-note>
+
+    <ion-button expand="full" type="submit" [disabled]="formLogin.invalid">Iniciar sesión</ion-button>
+    <ion-button expand="full" fill="outline" (click)="registrar()">Registrarse</ion-button>
+  </form>
 </ion-content>

@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
         await this.Storage.saveSession(userForm);
         console.log('Usuario Autenticado');
         let navExtra: NavigationExtras = { 
-          state: { user: this.formLogin.value.username } 
+          state: { email: userForm } 
         };
         this.router.navigate(['/index'], navExtra);
       }
@@ -61,9 +61,7 @@ export class LoginPage implements OnInit {
       this.formLogin.markAllAsTouched();
       await this.presentToast('Por favor revisa los campos del formulario');
     }
-  }
-
-  async presentToast(message: string) {
+  }  async presentToast(message: string) {
     const toast = await this.toastController.create({
       message,
       duration: 2000,
