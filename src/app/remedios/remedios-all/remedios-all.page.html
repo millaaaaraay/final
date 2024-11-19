@@ -5,17 +5,24 @@
 </ion-header>
 
 <ion-content>
+  <!-- Input para buscar remedio por ID -->
   <ion-item>
     <ion-label position="floating">ID del Remedio</ion-label>
-    <ion-input [(ngModel)]="id" type="number"></ion-input>
+    <ion-input [(ngModel)]="id" type="number" placeholder="Introduce el ID"></ion-input>
   </ion-item>
 
+  <!-- Botones principales -->
   <ion-button expand="full" (click)="leer()">Buscar</ion-button>
+  <ion-button expand="full" (click)="limpiarBusqueda()">Limpiar</ion-button>
+  <ion-button expand="full" (click)="verTodosRemedios()" *ngIf="!mostrarTodos">Ver Todos los Remedios</ion-button>
+  <ion-button expand="full" (click)="ocultarTodosRemedios()" *ngIf="mostrarTodos">Ocultar Remedios</ion-button>
 
+  <!-- Mensaje de error -->
   <div *ngIf="msgError" class="error-message">
-    {{ msgError }}
+    <ion-text color="danger">{{ msgError }}</ion-text>
   </div>
 
+  <!-- Información del remedio buscado -->
   <div *ngIf="producto">
     <ion-card>
       <ion-card-header>
@@ -28,6 +35,24 @@
     </ion-card>
   </div>
 
- 
+  <!-- Lista de todos los remedios -->
+  <div *ngIf="mostrarTodos && todosRemedios.length > 0">
+    <ion-card *ngFor="let remedio of todosRemedios">
+      <ion-card-header>
+        <ion-card-title>{{ remedio.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Descripción:</strong> {{ remedio.descripcion }}</p>
+        <p><strong>Dosis:</strong> {{ remedio.dosis }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Mensaje si no hay remedios disponibles -->
+  <div *ngIf="mostrarTodos && todosRemedios.length === 0">
+    <ion-text color="medium">No hay remedios disponibles.</ion-text>
+  </div>
+
+  <!-- Botón para regresar al menú -->
   <ion-button expand="full" color="secondary" (click)="volverAlMenu()">Volver</ion-button>
 </ion-content>

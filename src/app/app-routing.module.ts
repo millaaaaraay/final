@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { authGuard } from './services/guards/auth.guard';
-
+import { AuthGuard } from './services/guards/auth.guard'; // Importa el guard para autenticación
 
 const routes: Routes = [
   {
@@ -24,38 +23,32 @@ const routes: Routes = [
   {
     path: 'index',
     loadChildren: () => import('./index/index.module').then(m => m.IndexPageModule)
-    
   },
   {
     path: 'remedios',
-    loadChildren: () => import('./remedios/remedios/remedios.module').then(m => m.RemediosPageModule),
-    
+    loadChildren: () => import('./remedios/remedios/remedios.module').then(m => m.RemediosPageModule)
   },
-
   {
     path: 'remedios-add',
     loadChildren: () => import('./remedios/remedios-add/remedios-add.module').then(m => m.RemediosAddPageModule),
-    canActivate: [authGuard]  // Proteger la ruta con el authGuard
-    
-    
-
+    canActivate: [AuthGuard]  // Aplica el guard para proteger la ruta
   },
   {
     path: 'remedios-all',
     loadChildren: () => import('./remedios/remedios-all/remedios-all.module').then(m => m.RemediosAllPageModule),
-    canActivate: [authGuard]  // Proteger la ruta con el authGuard
+    canActivate: [AuthGuard]  // Aplica el guard para proteger la ruta
   },
   {
     path: 'remedios-detail',
-    loadChildren: () => import('./remedios/remedios-detail/remedios-detail.module').then(m => m.RemediosDetailPageModule),
+    loadChildren: () => import('./remedios/remedios-detail/remedios-detail.module').then(m => m.RemediosDetailPageModule)
   },
   {
     path: 'remedios-edit',
-    loadChildren: () => import('./remedios/remedios-edit/remedios-edit.module').then(m => m.RemediosEditPageModule),
+    loadChildren: () => import('./remedios/remedios-edit/remedios-edit.module').then(m => m.RemediosEditPageModule)
   },
   {
     path: 'remedios-list',
-    loadChildren: () => import('./remedios/remedios-list/remedios-list.module').then(m => m.RemediosListPageModule),
+    loadChildren: () => import('./remedios/remedios-list/remedios-list.module').then(m => m.RemediosListPageModule)
   },
 ];
 
