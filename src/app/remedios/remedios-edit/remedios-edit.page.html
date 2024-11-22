@@ -1,62 +1,33 @@
+
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
     <ion-title>Editar Remedio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()">Guardar</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Editar Remedio</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let remedio of remedios" (click)="selectRemedio(remedio.id)">
+      <ion-label>{{ remedio.nombre }}</ion-label>
+    </ion-item>
+  </ion-list>
 
-  <ion-content class="ion-padding">
-    <form (ngSubmit)="onFormSubmit()">
-      <ion-list>
-
-        <!-- Campo Nombre del Remedio -->
-        <ion-item>
-          <ion-label position="floating">Nombre del Remedio</ion-label>
-          <ion-input
-            type="text"
-            [(ngModel)]="remedios.nombre"
-            name="nombre"
-            required
-          ></ion-input>
-        </ion-item>
-
-        <!-- Campo Descripción -->
-        <ion-item>
-          <ion-label position="floating">Descripción</ion-label>
-          <ion-textarea
-            type="text"
-            [(ngModel)]="remedios.descripcion"
-            name="descripcion"
-            required
-          ></ion-textarea>
-        </ion-item>
-
-        <!-- Campo Dosis -->
-        <ion-item>
-          <ion-label position="floating">Dosis (mg)</ion-label>
-          <ion-input
-            type="number"
-            [(ngModel)]="remedios.dosis"
-            name="dosis"
-            required
-          ></ion-input>
-        </ion-item>
-
-      </ion-list>
-
-      <!-- Botón de Submit -->
-      <ion-button type="submit" expand="block" shape="round" color="primary">
-        Guardar Cambios
-      </ion-button>
-    </form>
-  </ion-content>
+  <div *ngIf="remedio">
+    <h2>Detalles del Remedio</h2>
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="remedio.nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-input [(ngModel)]="remedio.descripcion"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Dosis</ion-label>
+      <ion-input [(ngModel)]="remedio.dosis"></ion-input>
+    </ion-item>
+  </div>
 </ion-content>

@@ -61,9 +61,7 @@ export class AppComponent {
     this.router.navigate(['/remedios-add']);
   }
 
-  goToDeleteRemedio() {
-    this.router.navigate(['/remedios-delete']);
-  }
+ 
 
   goToAllRemedios() {
     this.router.navigate(['/remedios-all']);

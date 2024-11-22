@@ -1,28 +1,89 @@
-.submit-btn {
-  margin-top: 20px;
-}
-
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.animated-image {
-  width: 150px;
-  height: 150px;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
+ion-header {
+  --background: #004d7a; /* Color de fondo más profesional */
+  --color: rgb(125, 146, 216); /* Texto en blanco */
+  padding: 10px 16px;
+  ion-toolbar {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    ion-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: rgb(0, 0, 0);
+    }
+    ion-buttons {
+      ion-button {
+        --background: #00aaff;
+        --color: white;
+        font-weight: bold;
+        &:hover {
+          --background: #0088cc;
+        }
+      }
+    }
   }
-  40% {
-    transform: translateY(-20px);
+}
+
+ion-content {
+  background-color: #f4f4f9; /* Fondo claro para el contenido */
+  padding: 16px;
+  
+  ion-list {
+    margin-bottom: 20px;
+    
+    ion-item {
+      background-color: white;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-4px);
+      }
+      
+      ion-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+      }
+    }
   }
-  60% {
-    transform: translateY(-10px);
+
+  div {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 16px;
+    
+    h2 {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    ion-item {
+      margin-bottom: 12px;
+
+      ion-label {
+        font-size: 14px;
+        color: #555;
+      }
+
+      ion-input {
+        font-size: 16px;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+        
+        &::placeholder {
+          color: #aaa;
+        }
+      }
+    }
   }
 }
