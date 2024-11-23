@@ -1,7 +1,7 @@
 
 <ion-header>
   <ion-toolbar>
-    <ion-title>Lista de Remedios</ion-title>
+    <ion-title>Borrar Remedio</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,9 +9,10 @@
   <ion-list>
     <ion-item *ngFor="let remedio of remedios">
       <ion-label>
-        {{ remedio.nombre }}
+        <h2>{{ remedio.nombre }}</h2>
+        <p>{{ remedio.descripcion }}</p>
       </ion-label>
-      <ion-button (click)="deleteRemedio(remedio.id)" color="danger" slot="end">Eliminar</ion-button>
+      <ion-button color="danger" (click)="deleteRemedio(remedio.id)">Eliminar</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

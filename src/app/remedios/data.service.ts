@@ -71,7 +71,7 @@ export class DataService {
    * @param id ID del remedio a eliminar
    */
   deleteRemedios(id: number): Observable<Clremedios> {
-    return this.http.delete<Clremedios>(`${apiUrl}/${id}`, httpOptions)
+    return this.http.delete<Clremedios>(`${apiUrl}/remedios/${id}`, httpOptions)
       .pipe(
         tap(_ => console.log(`Remedio eliminado con ID=${id}`)),
         catchError(this.handleError<Clremedios>('deleteRemedio'))
