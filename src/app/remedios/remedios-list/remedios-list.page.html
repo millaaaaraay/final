@@ -1,30 +1,17 @@
+
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Lista Remedios</ion-title>
+    <ion-title>Lista de Remedios</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Indicador de carga (spinner) mientras se cargan los remedios -->
-  <ion-spinner *ngIf="remedios.length === 0" name="crescent"></ion-spinner>
-  
-  <!-- Lista de remedios -->
   <ion-list>
-    <!-- Recorremos el arreglo de remedios -->
     <ion-item *ngFor="let remedio of remedios">
-      <!-- Información del remedio -->
       <ion-label>
-        <h2>{{remedio.nombre}}</h2>
-        <p>{{remedio.descripcion}}</p>
-        <p>{{remedio.dosis }}</p>
+        {{ remedio.nombre }}
       </ion-label>
-      
-      <!-- Botones para editar o ver detalles -->
-      <ion-button [routerLink]="['/remedios-edit', remedio.id]" slot="end">Editar</ion-button>
-      <ion-button [routerLink]="['/remedios-detail', remedio.id]" slot="end">Detalles</ion-button>
+      <ion-button (click)="deleteRemedio(remedio.id)" color="danger" slot="end">Eliminar</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -9,14 +9,8 @@
       <!-- Aquí puedes agregar elementos del menú como enlaces o listas -->
       <ion-list>
         <ion-menu-toggle>
-          <ion-item>
-            <ion-icon name="person"></ion-icon>
-            <ion-label>Parametros</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="settings-outline"></ion-icon>
-            <ion-label>Settings</ion-label>
-          </ion-item>
+      
+    
           <ion-item button (click)="goToRemedios()">
             <ion-icon name="medkit"></ion-icon>
             <ion-label>Remedios</ion-label>
@@ -30,17 +24,13 @@
             <ion-icon name="medkit-all"></ion-icon>
             <ion-label>Todos los Remedios</ion-label>
           </ion-item>
-          <ion-item button (click)="goToDetailRemedio()">
-            <ion-icon name="medkit-details"></ion-icon>
-            <ion-label>Detalles de Remedios</ion-label>
-          </ion-item>
           <ion-item button (click)="goToEditRemedio()">
             <ion-icon name="medkit-edit"></ion-icon>
             <ion-label>Editar Remedios</ion-label>
           </ion-item>
           <ion-item button (click)="goToListRemedios()">
             <ion-icon name="medkit-list"></ion-icon>
-            <ion-label>Lista Remedios</ion-label>
+            <ion-label>Borrar Remedios</ion-label>
           </ion-item>
       </ion-menu-toggle>
       </ion-list>
