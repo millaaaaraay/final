@@ -7,17 +7,9 @@
       "dosis": "2"
     }
   ],
-  "rutinas": [
-    {
-      "id": "21",
-      "tipo": "flexibilidad",
-      "ejercicio1": "elongacion de cuello",
-      "ejercicio2": "movimiento del gato"
-    }
-  ],
   "usuarios": [
     {
-      "id": "benja@gmail.com",
+      "id": "1",
       "nombre": "benjamin",
       "email": "benja@gmail.com",
       "contrasena": "Abcdef1!"
