@@ -1,64 +1,88 @@
-/* Estilos generales para la página de inicio de sesión */
-.login-page {
-    padding: 16px; /* Espacio alrededor de la página */
-    background-color: #e0e0e0c8; /* Color de fondo suave */
+/* Variables globales para colores y estilos */
+:root {
+  --primary-color: #4caf50;
+  --background-color: #f4f4f9;
+  --text-color: #333;
+  --danger-color: #f44336;
+  --input-border-radius: 12px;
+}
+
+/* Estilo para centrar todo */
+ion-content {
+  --background: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Título centrado y estilizado */
+ion-title {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 500;
+  color: var(--text-color);
+  text-transform: capitalize;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 8px;
+  letter-spacing: 0.5px;
+}
+/* Formularios centrados */
+form {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid #000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Estilo para los ion-item (inputs) */
+ion-item {
+  --inner-padding-start: 10px;
+  --inner-padding-end: 10px;
+  margin-bottom: 20px;
+  border-radius: var(--input-border-radius);
+  border: 1px solid #ddd;
+  background: #fafafa;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo de los botones */
+ion-button {
+  --border-radius: 25px;
+  --background: transparent;
+  --color: var(--primary-color);
+  --border-color: #000;
+  --border-width: 1px;
+  --border-style: solid;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* Estilo para notas de error */
+ion-note[color="danger"] {
+  font-size: 0.85rem;
+  color: var(--danger-color);
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* Ajustes para el ion-label flotante */
+ion-label {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Respuesta visual en pantallas pequeñas */
+@media (max-width: 480px) {
+  form {
+    padding: 15px;
   }
-  
-  /* Estilo para la tarjeta */
-  .card-style {
-    margin: auto; /* Centra la tarjeta */
-    max-width: 400px; /* Limita el ancho de la tarjeta */
-    border-radius: 12px; /* Bordes redondeados */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  }
-  
-  /* Título de la aplicación */
-  .app-title {
-    font-size: 32px; /* Tamaño de fuente para el título de la aplicación */
-    font-weight: bold; /* Negrita */
-    color: #333; /* Color del texto */
-    margin: 0; /* Elimina el margen alrededor del título */
-  }
-  
-  /* Título de bienvenida */
-  .welcome-title {
-    font-size: 24px; /* Tamaño de fuente del título de bienvenida */
-    font-weight: bold; /* Negrita */
-    color: #333; /* Color del texto */
-    margin: 16px 0; /* Margen arriba y abajo */
-  }
-  
-  /* Espaciado de los botones */
-  .login-button,
-  .register-button {
-    margin-top: 10px; /* Margen entre los botones */
-    border-radius: 8px; /* Bordes redondeados */
-  }
-  
-  /* Estilo para los campos de entrada */
-  ion-item {
-    margin-bottom: 16px; /* Espaciado entre los campos de entrada */
-  }
-  
-  /* Estilo de los íconos */
-  ion-icon {
-    color: #888; /* Color de los íconos */
-  }
-  
-  /* Ajustes de color para los botones */
-  .login-button {
-    background-color: #3880ff; /* Color de fondo del botón de ingreso */
-    color: rgb(255, 255, 255); /* Color del texto */
-  }
-  
-  .register-button {
-    background-color: #ffc107; /* Color de fondo del botón de registro */
-    color: rgb(255, 255, 255); /* Color del texto */
-  }
-  
-  /* Hover effect para los botones */
-  .login-button:hover,
-  .register-button:hover {
-    opacity: 0.9; /* Efecto de opacidad al pasar el ratón */
-  }
-  
+}

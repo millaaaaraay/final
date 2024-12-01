@@ -1,10 +1,14 @@
+
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title>inicio de sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <div class="ion-text-center">
+    <ion-img src="assets/icon/iniciosesioncheka.png" style="max-width: 200px; margin: 20px auto;"></ion-img>
+  </div>
   <form [formGroup]="formLogin" (ngSubmit)="onLogin()">
     <ion-item>
       <ion-label position="floating">Correo electrónico</ion-label>
