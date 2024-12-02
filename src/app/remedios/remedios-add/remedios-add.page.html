@@ -41,13 +41,14 @@
       </ion-card>
 
       <!-- Botón de Submit -->
-      <ion-button type="submit" expand="block" shape="round" color="primary" [disabled]="!productForm.valid">
-        Guardar Remedio
+      <ion-button type="submit" expand="block" shape="round" color="tertiary" [disabled]="!productForm.valid">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        <span style="color: rgb(255, 255, 255);">Guardar Remedio</span>
       </ion-button>
 
       <!-- Imagen debajo del botón -->
       <div class="image-container">
-        <img src="assets/icon/remedios.jpg" alt="Remedio" />
+        <img src="assets/icon/farmacos.png" alt="Remedio" />
       </div>
 
     </form>
