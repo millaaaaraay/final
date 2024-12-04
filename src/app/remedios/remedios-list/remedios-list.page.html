@@ -1,18 +1,20 @@
+  <ion-header>
+    <ion-toolbar>
+      <ion-title color="dark">Borrar Remedio</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Borrar Remedio</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let remedio of remedios">
-      <ion-label>
-        <h2>{{ remedio.nombre }}</h2>
-        <p>{{ remedio.descripcion }}</p>
-      </ion-label>
-      <ion-button color="danger" (click)="deleteRemedio(remedio.id)">Eliminar</ion-button>
-    </ion-item>
-  </ion-list>
-</ion-content>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let remedio of remedios">
+        <ion-label>
+          <h2>{{ remedio.nombre }}</h2>
+          <p>{{ remedio.descripcion }}</p>
+        </ion-label>
+        <ion-button fill="outline" color="dark" shape="round" size="medium" (click)="deleteRemedio(remedio.id)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Eliminar
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>

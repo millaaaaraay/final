@@ -1,58 +1,67 @@
-
-ion-header {
-  background-color: #f8f9fa;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-ion-toolbar {
-  --background: #007bff;
-  color: white;
-}
-
-ion-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-ion-content {
-  background-color: #ffffff;
-  padding: 16px;
-}
-
-ion-list {
-  margin-top: 16px;
-}
-
-ion-item {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-}
-
-ion-label {
-  h2 {
-    font-size: 1.2rem;
-    color: #333;
+  ion-header {
+    --background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  p {
-    font-size: 0.9rem;
-    color: #666;
+  ion-toolbar {
+    --background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%);
+    color: white;
   }
-}
 
-ion-button {
-  --background: #dc3545;
-  --color: white;
-  border-radius: 4px;
-  font-weight: bold;
-
-  &:hover {
-    opacity: 0.8;
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: bold;
   }
-}
+
+  ion-content {
+    --background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    padding: 20px;
+  }
+
+  ion-list {
+    background: transparent;
+    padding: 10px;
+  }
+
+  ion-item {
+    --background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 12px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  ion-label {
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2d3436;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #636e72;
+      line-height: 1.4;
+    }
+  }
+
+  ion-button[color="purple"] {
+    --background: #ef5350;
+    --color: #ffffff;
+    border-radius: 8px;
+    font-weight: 600;
+    margin: 0 8px;
+    height: 40px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      --background: #e57373;
+    }
+  }
