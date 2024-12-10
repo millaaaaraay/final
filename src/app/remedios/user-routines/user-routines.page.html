@@ -1,0 +1,52 @@
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Mis Rutinas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <!-- Lista de rutinas -->
+        <ion-col size="12" size-md="6">
+          <ion-list>
+                    <ion-item *ngFor="let routine of routines" 
+                              (click)="selectRoutine(routine)"
+                              [class.selected]="selectedRoutine?.id === routine.id">
+                      <ion-label>
+                        <h2>{{routine.nombre}}</h2>
+                        <p>Duración: {{routine.duracion}} minutos</p>
+                        <p>{{routine.descripcion}}</p>
+                      </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+
+        <!-- Detalles de la rutina seleccionada -->
+        <ion-col size="12" size-md="6">
+          <ion-card *ngIf="selectedRoutine">
+            <ion-card-header>
+              <ion-card-title>{{selectedRoutine.nombre}}</ion-card-title>
+              <ion-card-subtitle>Tiempo objetivo: {{getTargetTimeFormatted()}}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="timer-display">
+                <h1>{{getFormattedTime()}}</h1>
+              </div>
+
+              <div class="timer-controls">
+                <ion-button expand="block" (click)="startTimer()" [disabled]="isRunning">
+                  <ion-icon name="play" slot="start"></ion-icon>
+                  Iniciar
+                </ion-button>
+                <ion-button expand="block" (click)="stopTimer()" [disabled]="!isRunning" color="danger">
+                  <ion-icon name="stop" slot="start"></ion-icon>
+                  Detener
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>

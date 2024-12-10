@@ -53,6 +53,10 @@ const routes: Routes = [
     path: 'rutinas-add',
     loadChildren: () => import('./remedios/rutinas-add/rutinas-add.module').then( m => m.RutinasAddPageModule)
   },
+  {
+    path: 'user-routines',
+    loadChildren: () => import('./remedios/user-routines/user-routines.module').then( m => m.UserRoutinesPageModule)
+  },
 
 
 

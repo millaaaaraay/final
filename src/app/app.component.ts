@@ -81,6 +81,10 @@ export class AppComponent {
     this.router.navigate(['/rutinas-add']);
   }
 
+  goTousercronometro() {
+    this.router.navigate(['/user-routines']);
+  }
+
 
   async CerrarSesion() {
     const alert = await this.alertCtrl.create({
