@@ -85,6 +85,10 @@ export class AppComponent {
     this.router.navigate(['/user-routines']);
   }
 
+  goTorutinasejemplos() {
+    this.router.navigate(['/ejemplo-rutinas']);
+  }
+
 
   async CerrarSesion() {
     const alert = await this.alertCtrl.create({

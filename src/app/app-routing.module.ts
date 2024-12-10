@@ -57,6 +57,10 @@ const routes: Routes = [
     path: 'user-routines',
     loadChildren: () => import('./remedios/user-routines/user-routines.module').then( m => m.UserRoutinesPageModule)
   },
+  {
+    path: 'ejemplo-rutinas',
+    loadChildren: () => import('./remedios/ejemplo-rutinas/ejemplo-rutinas.module').then( m => m.EjemploRutinasPageModule)
+  },
 
 
 
