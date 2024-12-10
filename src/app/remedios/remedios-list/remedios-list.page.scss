@@ -1,20 +1,31 @@
   ion-header {
-    --background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    --background: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   ion-toolbar {
-    --background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%);
-    color: white;
+    --background: linear-gradient(135deg, #f0e6f9 0%, #e8f4f8 100%);
+    color: #000000;
   }
 
-  ion-title {
-    font-size: 1.5rem;
-    font-weight: bold;
+  .titulo {
+    text-align: left; /* Alineación a la izquierda */
+    width: auto; /* Ajusta el ancho si es necesario */
+    margin-left: 40px; /* Espaciado desde la izquierda (opcional) */
+    font-size: 18px; /* Tamaño del texto */
+    font-weight: normal; /* Estilo opcional */
+    
+    &:hover {
+      transform: translateX(10px);
+    }
+    
+    &:active {
+      transform: translateX(-10px);
+    }
   }
 
   ion-content {
-    --background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    --background: linear-gradient(135deg, #78cce8 0%, #bd95e5 100%);
     padding: 20px;
   }
 
@@ -24,7 +35,7 @@
   }
 
   ion-item {
-    --background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    --background: linear-gradient(135deg, #f0e6f9 0%, #e8f4f8 100%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     margin-bottom: 16px;
@@ -34,6 +45,7 @@
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      --background: linear-gradient(135deg, #e6d9f7 0%, #d9eef5 100%);
     }
   }
 
@@ -41,19 +53,19 @@
     h2 {
       font-size: 1.3rem;
       font-weight: 600;
-      color: #2d3436;
+      color: #8933df;
       margin-bottom: 8px;
     }
 
     p {
       font-size: 1rem;
-      color: #636e72;
+      color: #8933df;
       line-height: 1.4;
     }
   }
 
   ion-button[color="purple"] {
-    --background: #ef5350;
+    --background: #8933df;
     --color: #ffffff;
     border-radius: 8px;
     font-weight: 600;
@@ -62,6 +74,6 @@
     --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
     &:hover {
-      --background: #e57373;
+      --background: #8933df;
     }
   }

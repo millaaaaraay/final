@@ -49,7 +49,13 @@ const routes: Routes = [
   {
     path: 'remedios-list',
     loadChildren: () => import('./remedios/remedios-list/remedios-list.module').then(m => m.RemediosListPageModule)
+  },  {
+    path: 'rutinas-add',
+    loadChildren: () => import('./remedios/rutinas-add/rutinas-add.module').then( m => m.RutinasAddPageModule)
   },
+
+
+
 ];
 
 @NgModule({

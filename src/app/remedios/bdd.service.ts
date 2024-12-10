@@ -7,6 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
 import { Clremedios } from './models/CLremedios';
 import { Clusuarios } from './models/Clusuarios';
+import { CLrutinas } from './models/CLrutinas';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
@@ -60,6 +61,12 @@ export class BddService {
         email TEXT NOT NULL,
         contrasena TEXT NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS rutinas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        descripcion TEXT NOT NULL,
+        duracion TEXT NOT NULL
+      );
     `;
 
     if (this.dbInstance) {
@@ -112,6 +119,15 @@ export class BddService {
     }
   }
 
+  async insertRutinas(rutinas: CLrutinas[]) {
+    if (this.dbInstance) {
+      const sql = 'INSERT OR REPLACE INTO rutinas (id, nombre, descripcion, duracion) VALUES (?, ?, ?, ?)';
+      for (const rutina of rutinas) {
+        await this.dbInstance.executeSql(sql, [rutina.id, rutina.nombre, rutina.descripcion, rutina.duracion]);
+      }
+    }
+  }
+
   async addRemedio(remedio: Clremedios): Promise<Clremedios> {
     const sql = 'INSERT INTO remedios (nombre, descripcion, dosis) VALUES (?, ?, ?)';
     if (this.dbInstance) {
@@ -135,6 +151,21 @@ export class BddService {
         return usuario;
       } catch (e) {
         console.error('Error adding usuario', e);
+        throw e;
+      }
+    } else {
+      throw new Error('Database is not initialized');
+    }
+  }
+
+  async addRutina(rutina: CLrutinas): Promise<CLrutinas> {
+    const sql = 'INSERT INTO rutinas (nombre, descripcion, duracion) VALUES (?, ?, ?)';
+    if (this.dbInstance) {
+      try {
+        await this.dbInstance.executeSql(sql, [rutina.nombre, rutina.descripcion, rutina.duracion]);
+        return rutina;
+      } catch (e) {
+        console.error('Error adding rutina', e);
         throw e;
       }
     } else {
@@ -173,6 +204,25 @@ export class BddService {
         return usuarios;
       } catch (e) {
         console.error('Error fetching usuarios', e);
+        throw e;
+      }
+    } else {
+      throw new Error('Database is not initialized');
+    }
+  }
+
+  async getRutinas(): Promise<CLrutinas[]> {
+    const sql = 'SELECT * FROM rutinas';
+    if (this.dbInstance) {
+      try {
+        const result = await this.dbInstance.executeSql(sql, []);
+        const rutinas: CLrutinas[] = [];
+        for (let i = 0; i < result.rows.length; i++) {
+          rutinas.push(result.rows.item(i));
+        }
+        return rutinas;
+      } catch (e) {
+        console.error('Error fetching rutinas', e);
         throw e;
       }
     } else {
@@ -230,6 +280,34 @@ export class BddService {
             await this.dbInstance.executeSql('DELETE FROM usuarios WHERE id = ?', [usuario.id]);
           } else {
             console.error(`Error al sincronizar el usuario con id ${usuario.id}:`, error);
+          }
+        }
+      }
+    }
+  }
+
+  async sincronizarRutinas(): Promise<void> {
+    const sql = 'SELECT * FROM rutinas';
+    if (this.dbInstance) {
+      const result = await this.dbInstance.executeSql(sql, []);
+      
+      for (let i = 0; i < result.rows.length; i++) {
+        const rutina = result.rows.item(i);
+        
+        try {
+          const apiRutina = await lastValueFrom(this.dataService.getRutina(rutina.id));
+          
+          if (apiRutina) {
+            await this.dbInstance.executeSql('DELETE FROM rutinas WHERE id = ?', [rutina.id]);
+            console.log(`Rutina con id ${rutina.id} eliminada del almacenamiento local`);
+          }
+        } catch (error: unknown) {
+          if (error instanceof HttpErrorResponse && error.status === 404) {
+            await lastValueFrom(this.dataService.addRutina(rutina));
+            console.log(`Rutina con id ${rutina.id} añadida al servidor`);
+            await this.dbInstance.executeSql('DELETE FROM rutinas WHERE id = ?', [rutina.id]);
+          } else {
+            console.error(`Error al sincronizar la rutina con id ${rutina.id}:`, error);
           }
         }
       }

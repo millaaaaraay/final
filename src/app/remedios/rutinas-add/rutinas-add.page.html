@@ -1,0 +1,43 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/remedios/rutinas"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar Rutina</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre" type="text" required></ion-input>
+    </ion-item>
+    <div *ngIf="productForm.get('nombre')?.touched && productForm.get('nombre')?.invalid" class="error-message">
+      <ion-text color="danger">El nombre es requerido</ion-text>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea formControlName="descripcion" required></ion-textarea>
+    </ion-item>
+    <div *ngIf="productForm.get('descripcion')?.touched && productForm.get('descripcion')?.invalid" class="error-message">
+      <ion-text color="danger">La descripción es requerida</ion-text>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Duración (minutos)</ion-label>
+      <ion-input formControlName="duracion" type="number" required></ion-input>
+    </ion-item>
+    <div *ngIf="productForm.get('duracion')?.touched && productForm.get('duracion')?.invalid" class="error-message">
+      <ion-text color="danger">La duración es requerida</ion-text>
+    </div>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" [disabled]="!productForm.valid">
+        Guardar Rutina
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
