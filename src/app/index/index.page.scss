@@ -104,3 +104,11 @@ ion-menu ion-item:hover {
     transform: translateY(0);
   }
 }
+
+.ion-text-left {
+  text-align: left; /* Alineación a la izquierda */
+  width: auto; /* Ajusta el ancho si es necesario */
+  margin-left: 45px; /* Espaciado desde la izquierda (opcional) */
+  font-size: 18px; /* Tamaño del texto */
+  font-weight: normal; /* Estilo opcional */
+}

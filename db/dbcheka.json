@@ -5,6 +5,12 @@
       "nombre": "clonazepam",
       "descripcion": "relajante",
       "dosis": "2"
+    },
+    {
+      "id": 2,
+      "nombre": "nada",
+      "descripcion": "nada",
+      "dosis": "nada"
     }
   ],
   "usuarios": [
@@ -13,6 +19,12 @@
       "nombre": "benjamin",
       "email": "benja@gmail.com",
       "contrasena": "Abcdef1!"
+    },
+    {
+      "id": 2,
+      "nombre": "luna",
+      "email": "luna@gmail.com",
+      "contrasena": "Abcdef2!"
     }
   ]
 }

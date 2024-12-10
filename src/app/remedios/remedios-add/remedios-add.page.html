@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button>
+        <ion-icon name="list-outline" size="large" color="dark"></ion-icon>
+      </ion-menu-button>
     </ion-buttons>
-    <ion-title>Agregar Remedio</ion-title>
+    <ion-title class="ion-text-left" style="font-weight: normal;"> Agrega Tus Remedios </ion-title> 
   </ion-toolbar>
 </ion-header>
 
@@ -21,31 +23,29 @@
           <ion-list>
             <!-- Campo Nombre -->
             <ion-item>
-              <ion-label position="floating">Nombre del Remedio</ion-label>
+              <ion-label position="floating" style="font-weight: normal;">Nombre del Remedio</ion-label>
               <ion-input type="text" formControlName="nombre"></ion-input>
             </ion-item>
 
             <!-- Campo Descripción -->
             <ion-item>
-              <ion-label position="floating">Descripción</ion-label>
+              <ion-label position="floating" style="font-weight: normal;">Descripción</ion-label>
               <ion-textarea formControlName="descripcion"></ion-textarea>
             </ion-item>
 
             <!-- Campo Dosis -->
             <ion-item>
-              <ion-label position="floating">Dosis (mg)</ion-label>
+              <ion-label position="floating" style="font-weight: normal;">Dosis (mg)</ion-label>
               <ion-textarea formControlName="dosis"></ion-textarea>
-            </ion-item>
-          </ion-list>
+            </ion-item>          </ion-list>
         </ion-card-content>
       </ion-card>
 
       <!-- Botón de Submit -->
       <ion-button type="submit" expand="block" shape="round" color="tertiary" [disabled]="!productForm.valid">
         <ion-icon name="save-outline" slot="start"></ion-icon>
-        <span style="color: rgb(255, 253, 253);">Guardar Remedio</span>
+        <span style="color: rgb(255, 253, 253); font-weight: normal;">Guardar Remedio</span>
       </ion-button>
-
       <!-- Imagen debajo del botón -->
       <div class="image-container">
         <img src="assets/icon/farmacos.png" alt="Remedio" />

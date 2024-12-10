@@ -2,12 +2,13 @@
 import { Injectable } from '@angular/core';
 import { Clremedios } from './models/CLremedios';
 import { Clusuarios } from './models/Clusuarios';
+import { CLrutinas } from './models/CLrutinas';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 // URL del JSON Server
-const apiUrl = "https://671fa57fe7a5792f052f0b55.mockapi.io";
+const apiUrl = "https://67536521f3754fcea7bb9f56.mockapi.io";
 const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
 @Injectable({
@@ -151,6 +152,69 @@ export class DataService {
         .pipe(
           tap(_ => console.log(`Usuario actualizado con ID=${id}`)),
           catchError(this.handleError<any>('updateUsuario'))
+        );
+    }
+
+    /**
+     * Añade una nueva rutina al servidor.
+     * @param rutina Objeto de tipo CLrutinas a añadir
+     */
+    addRutina(rutina: CLrutinas): Observable<CLrutinas> {
+      console.log("Añadiendo rutina:", rutina);
+      return this.http.post<CLrutinas>(apiUrl+'/rutinas', rutina, httpOptions)
+        .pipe(
+          tap((nuevaRutina: CLrutinas) => console.log('Rutina añadida:', nuevaRutina)),
+          catchError(this.handleError<CLrutinas>('addRutina'))
+        );
+    }
+  
+    /**
+     * Obtiene todas las rutinas del servidor.
+     */
+    getRutinas(): Observable<CLrutinas[]> {
+      console.log("Obteniendo todas las rutinas...");
+      return this.http.get<CLrutinas[]>(apiUrl+'/rutinas')
+        .pipe(
+          tap(rutinas => console.log('Rutinas obtenidas:', rutinas)),
+          catchError(this.handleError('getRutinas', []))
+        );
+    }
+  
+    /**
+     * Obtiene una rutina específica por ID.
+     * @param id ID de la rutina
+     */
+    getRutina(id: number): Observable<CLrutinas> {
+      console.log("Obteniendo rutina con ID:", id);
+      return this.http.get<CLrutinas>(`${apiUrl+'/rutinas'}/${id}`)
+        .pipe(
+          tap(_ => console.log(`Rutina obtenida con ID=${id}`)),
+          catchError(this.handleError<CLrutinas>(`getRutina id=${id}`))
+        );
+    }
+  
+    /**
+     * Elimina una rutina del servidor por ID.
+     * @param id ID de la rutina a eliminar
+     */
+    deleteRutina(id: number): Observable<CLrutinas> {
+      return this.http.delete<CLrutinas>(`${apiUrl}/rutinas/${id}`, httpOptions)
+        .pipe(
+          tap(_ => console.log(`Rutina eliminada con ID=${id}`)),
+          catchError(this.handleError<CLrutinas>('deleteRutina'))
+        );
+    }
+  
+    /**
+     * Actualiza una rutina existente.
+     * @param id ID de la rutina a actualizar
+     * @param rutina Objeto de tipo CLrutinas con los nuevos valores
+     */
+    updateRutina(id: number, rutina: CLrutinas): Observable<CLrutinas> {
+      return this.http.put<CLrutinas>(`${apiUrl+'/rutinas'}/${id}`, rutina, httpOptions)
+        .pipe(
+          tap(_ => console.log(`Rutina actualizada con ID=${id}`)),
+          catchError(this.handleError<any>('updateRutina'))
         );
     }
   

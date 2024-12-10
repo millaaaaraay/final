@@ -116,3 +116,15 @@ ion-button[type="submit"] ion-icon {
   margin-right: 8px;
   font-size: 20px;
 }
+
+ion-title {
+  text-align: left;
+}
+
+.ion-text-left {
+  text-align: left; /* Alineación a la izquierda */
+  width: auto; /* Ajusta el ancho si es necesario */
+  margin-left: 25px; /* Espaciado desde la izquierda (opcional) */
+  font-size: 18px; /* Tamaño del texto */
+  font-weight: bold; /* Estilo opcional */
+}

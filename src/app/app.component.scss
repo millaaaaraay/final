@@ -6,13 +6,26 @@ ion-menu {
   /* Estilos para el botón del menú en el header */
   ion-buttons {
     ion-menu-button {
-      --color: #3880ff;
+      --color: #8933df;
     }
   }
   
   /* Estilos para el contenido del menú */
   ion-menu ion-content {
-    padding: 10px;
+    padding: 50px;
+    --background: linear-gradient(135deg, #78cce8 0%, #bd95e5 100%);
+  }
+  
+  ion-menu ion-toolbar {
+    --background: linear-gradient(135deg, #78cce8 0%, #bd95e5 100%);
+    ion-title {
+      color: #000000;
+      text-align: center;
+      font-weight: normal;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
   
   ion-menu ion-list {
@@ -20,10 +33,10 @@ ion-menu {
   }
   
   ion-menu ion-item {
-    --background: #f8f8f8;
-    --color: #000;
+    --background: linear-gradient(135deg, #f0e6f9 0%, #e8f4f8 100%);
+    --color: #000000;
   }
   
   ion-menu ion-item:hover {
-    --background: #e0e0e0;
+    --background: linear-gradient(135deg, #e6d9f7 0%, #d9eef5 100%);
   }

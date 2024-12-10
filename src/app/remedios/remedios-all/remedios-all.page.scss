@@ -8,6 +8,14 @@
   ion-item {
     --highlight-color-focused: #000000;
   }
+.titulo-principal {
+  text-align: left; /* Alineación a la izquierda */
+  width: auto; /* Ajusta el ancho si es necesario */
+  margin-left: 40px; /* Espaciado desde la izquierda (opcional) */
+  font-size: 18px; /* Tamaño del texto */
+  font-weight: normal; /* Estilo opcional */
+  color: #000000; /* Letra en negro fuerte */
+  }
 
   ion-button {
     margin: 10px 0;
@@ -41,7 +49,7 @@
     background: linear-gradient(135deg, #8933df 0%, #329abd 100%);
   }
 
-  ion-card-title {
+  ion-card-title.titulo {
     font-size: 1.2em;
     font-weight: bold;
     color: #ffffff;
@@ -74,3 +82,4 @@
     --padding-start: 10px;
     margin-top: 8px;
   }
+
