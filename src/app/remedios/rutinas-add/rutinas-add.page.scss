@@ -1,0 +1,131 @@
+/* Fondo del ion-content */
+ion-content {
+    --background: linear-gradient(135deg, #b36cfa 0%, #6cd2f4 100%);
+  }
+  
+  /* Estilo del ion-card */
+  ion-card {
+    margin: 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.98);
+  }
+  
+  ion-card-content {
+    padding: 24px;
+  }
+  
+  /* Estilo de ion-item (contenedor de los campos) */
+  ion-item {
+    --background: rgba(230, 251, 236, 0.95);
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    --padding-start: 4px;
+    --inner-padding-end: 4px;
+  }
+  
+  /* Estilo de los labels */
+  ion-label {
+    color: #7a7474;
+    font-weight: 600;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    letter-spacing: 0.2px;
+  }
+  
+  /* Estilo de los campos de entrada */
+  ion-input, ion-textarea {
+    --background:linear-gradient(to right, #cfb2ed, #99d8ef) ;
+    --color: #000000;
+    --padding-start: 12px;
+    border-radius: 8px;
+    margin-top: 6px;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+  }
+  
+  /* Placeholder de los campos (texto antes de escribir) */
+  ion-input::placeholder, ion-textarea::placeholder {
+    color: #000000;
+    opacity: 0.7;
+  }
+  
+  /* Contenedor de la imagen */
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    padding: 10px;
+    background: linear-gradient(to right, #b36cfa, #6cd2f4);
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+  }
+  
+  /* Imagen dentro del contenedor */
+  .image-container img {
+    width: 160px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(216, 3, 3, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .image-container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  ion-item {
+    --highlight-height: 0;
+  }
+  
+  ion-label[position="floating"] {
+    position: relative;
+    top: 0;
+    transform: none !important;
+    font-size: 15px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  
+  /* Estilo del botón submit */
+  ion-button[type="submit"] {
+    --background: #2dd36f;
+    --background-hover: #28ba62;
+    --color: #000000;
+    margin: 20px auto;
+    height: 48px;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    --border-radius: 24px;
+    --box-shadow: 0 4px 12px rgb(207, 40, 236);
+    transition: all 0.3s ease;
+  }
+  
+  ion-button[type="submit"]:hover {
+    --box-shadow: 0 6px 16px rgb(214, 51, 255);
+  }
+  
+  ion-button[type="submit"] ion-icon {
+    margin-right: 8px;
+    font-size: 20px;
+  }
+  
+  ion-title {
+    text-align: left;
+  }
+  
+  .ion-text-left {
+    text-align: left; /* Alineación a la izquierda */
+    width: auto; /* Ajusta el ancho si es necesario */
+    margin-left: 25px; /* Espaciado desde la izquierda (opcional) */
+    font-size: 18px; /* Tamaño del texto */
+    font-weight: normal; /* Estilo opcional */
+  }
+  

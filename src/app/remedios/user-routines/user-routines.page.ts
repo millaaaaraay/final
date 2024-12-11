@@ -15,6 +15,7 @@ export class UserRoutinesPage implements OnInit, OnDestroy {
   isRunning = false;
   timer: any;
   targetTime = 0;
+  showTimer = false;
 
   constructor(private dataService: DataService) {}
 
@@ -47,6 +48,7 @@ export class UserRoutinesPage implements OnInit, OnDestroy {
     this.timeElapsed = 0;
     this.targetTime = routine.duracion ? Number(routine.duracion) : 0;
     this.isRunning = false;
+    this.showTimer = true;
     if (this.timer) {
       clearInterval(this.timer);
     }
@@ -57,6 +59,7 @@ export class UserRoutinesPage implements OnInit, OnDestroy {
     if (this.isRunning) return;
 
     this.isRunning = true;
+    this.showTimer = true;
 
     this.timer = setInterval(() => {
       this.timeElapsed += 1;
@@ -72,6 +75,13 @@ export class UserRoutinesPage implements OnInit, OnDestroy {
       clearInterval(this.timer);
     }
     this.isRunning = false;
+  }
+
+  // Cancelar el cronómetro
+  cancelTimer() {
+    this.stopTimer();
+    this.timeElapsed = 0;
+    this.showTimer = false;
   }
 
   // Formatear el tiempo en minutos y segundos

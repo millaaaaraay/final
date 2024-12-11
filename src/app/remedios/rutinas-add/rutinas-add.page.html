@@ -1,43 +1,66 @@
-
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/remedios/"></ion-back-button>
+      <ion-menu-button>
+        <ion-icon name="list-outline" size="large" color="dark"></ion-icon>
+      </ion-menu-button>
     </ion-buttons>
-    <ion-title>Agregar Rutina</ion-title>
+    <ion-title class="ion-text-left" style="font-weight: normal;"> Agregar Rutinas </ion-title> 
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input formControlName="nombre" type="text" required></ion-input>
-    </ion-item>
-    <div *ngIf="productForm.get('nombre')?.touched && productForm.get('nombre')?.invalid" class="error-message">
-      <ion-text color="danger">El nombre es requerido</ion-text>
-    </div>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Nueva Rutina</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-textarea formControlName="descripcion" required></ion-textarea>
-    </ion-item>
-    <div *ngIf="productForm.get('descripcion')?.touched && productForm.get('descripcion')?.invalid" class="error-message">
-      <ion-text color="danger">La descripción es requerida</ion-text>
-    </div>
+  <ion-content class="ion-padding">
+    <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
+      <ion-card>
+        <ion-card-content>
+          <ion-list>
+            <!-- Campo Nombre -->
+            <ion-item>
+              <ion-label position="floating" style="font-weight: normal;">Nombre de la Rutina</ion-label>
+              <ion-input type="text" formControlName="nombre" required></ion-input>
+            </ion-item>
+            <div *ngIf="productForm.get('nombre')?.touched && productForm.get('nombre')?.invalid" class="error-message">
+              <ion-text color="danger">El nombre es requerido</ion-text>
+            </div>
 
-    <ion-item>
-      <ion-label position="floating">Duración (minutos)</ion-label>
-      <ion-input formControlName="duracion" type="number" required></ion-input>
-    </ion-item>
-    <div *ngIf="productForm.get('duracion')?.touched && productForm.get('duracion')?.invalid" class="error-message">
-      <ion-text color="danger">La duración es requerida</ion-text>
-    </div>
+            <!-- Campo Descripción -->
+            <ion-item>
+              <ion-label position="floating" style="font-weight: normal;">Descripción</ion-label>
+              <ion-textarea formControlName="descripcion" required></ion-textarea>
+            </ion-item>
+            <div *ngIf="productForm.get('descripcion')?.touched && productForm.get('descripcion')?.invalid" class="error-message">
+              <ion-text color="danger">La descripción es requerida</ion-text>
+            </div>
 
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit" [disabled]="!productForm.valid">
-        Guardar Rutina
+            <!-- Campo Duración -->
+            <ion-item>
+              <ion-label position="floating" style="font-weight: normal;">Duración (minutos)</ion-label>
+              <ion-input type="number" formControlName="duracion" required></ion-input>
+            </ion-item>
+            <div *ngIf="productForm.get('duracion')?.touched && productForm.get('duracion')?.invalid" class="error-message">
+              <ion-text color="danger">La duración es requerida</ion-text>
+            </div>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Botón de Submit -->
+      <ion-button type="submit" expand="block" shape="round" color="tertiary" [disabled]="!productForm.valid">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        <span style="color: rgb(255, 253, 253); font-weight: normal;">Guardar Rutina</span>
       </ion-button>
-    </div>
-  </form>
+
+      <!-- Imagen debajo del botón -->
+      <div class="image-container">
+        <img src="assets/icon/rutina.png" alt="Rutina" />
+      </div>
+    </form>
+  </ion-content>
 </ion-content>

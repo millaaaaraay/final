@@ -33,16 +33,14 @@
             <ion-label style="color: black">Borrar Remedios</ion-label>
           </ion-item>
           <ion-item button (click)="goTorutinas()">
-            <ion-icon name="fitness-outline" color="primary"></ion-icon>
-            <ion-label style="color: black">rutinas</ion-label>
-          </ion-item>
-          <ion-item button (click)="goTorutinasejemplos()">
-            <ion-icon name="fitness-outline" color="primary"></ion-icon>
-            <ion-label style="color: black">Ejercicios en Detalle</ion-label>
-          </ion-item>
+            <ion-icon name="barbell-outline" color="primary"></ion-icon>
+            <ion-label style="color: black"> Agregar Rutinas</ion-label>          </ion-item>
+          <ion-item button class="ejercicios-item" (click)="goTorutinasejemplos()">
+            <ion-icon name="body-outline" color="primary"></ion-icon>
+            <ion-label style="color: black">Ejercicios en Detalle</ion-label>          </ion-item>
           <ion-item button (click)="goTousercronometro()">
             <ion-icon name="stopwatch-outline" color="success"></ion-icon>
-            <ion-label style="color: black">ejercios</ion-label>
+            <ion-label style="color: black">Hacer ejercicios</ion-label>
           </ion-item>          <ion-item button (click)="CerrarSesion()">
             <ion-icon name="log-out-outline" color="danger"></ion-icon>
             <ion-label style="color: black">Cerrar Sesión</ion-label>
